@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	 <meta charset="utf-8">
+	 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
+	 <meta name="description" content="">
+	 <meta name="author" content="">
+	 <link rel = "icon" href ="https://static.thenounproject.com/png/8698-200.png">
+	 <style>
+
+	 .counties :hover {
+	   fill: red;
+	 }
+
+	 .county-borders {
+	   fill: none;
+	   stroke: #fff;
+	   stroke-width: 0.5px;
+	   stroke-linejoin: round;
+	   stroke-linecap: round;
+	   pointer-events: none;
+	 }
+
+	 </style>
+	 <title>Southeastern USA</title>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+
+	 <link rel = stylesheet type=text/css href="{{ url_for('static', filename='stylesheets/style.css') }}" />
+</head>
+
+<body>
+<div style="width:100%" style="display:inline">
+	<div class = "disp" id="mapappTT" style="display:inline-block;margin-left:0">
+		<div id="dd" style="width:25%;margin-left:0px;position:absolute;transform:translate(-40px,0)"><p style="position:absolute;left:190px;top:-8px"><b>by County</b></p></div>
+
+		<svg id="geoj" width="430" height="380" style="display:inline"></svg>
+
+		</div>
+		<div class="disp" style="display:inline-block">
+			<div id="barX" style="width:25%;"><p style="position:absolute;left:720px;top:-8px"><b>Frequency</b></p></div>
+
+	<svg id="bar" width="460" height="340" style="display:inline"></svg>
+	<div id="barXtext" style="width:25%;"></div>
+
+</div>
+<div class="disp" id="appTT" style="display:inline-block">
+	<div id="scatterY" style="width:25%; "></div>
+	<div id="scatterX" style="width:25%"></div>
+
+<svg id="scatter" width="460" height="340" style="display:inline; margin-top:12px"></svg>
+
+<div id="scatterXtext" style="width:25%;"></div>
+<p style="position:absolute;left:1130px;top:-2px"><b>by</b></p>
+<div id="scatterYtext" style="width:25%;"></div>
+
+
+</div>
+	<div class = "disp" style="display:inline-block">
+		<svg id="mdsB" width="500" height="340" style="display:inline"></svg>
+		<div style="position:relative;bottom:85px;left:150px"><b>MDS Plot for Attributes</b></div>
+		</div>
+		<div class = "disp" style="display:inline-block;margin-right:0px">
+			<div id="mmX" style="margin-left:120px;margin-top:15px;margin-bottom:-5px"></div>
+			<p id="mmXtext" style="position:absolute;left:850px;top:375px"><b>by</b></p>
+
+			<div id="mmY" style="position:absolute;margin-left:720px"></div>
+				<div id="mmYtext" style="width:25%;"></div>
+			<svg id="mm" width="700" height="330" style="display:inline;margin-right:0px">
+				<div id="mmTitle" width="700" height="20" style="position:absolute;margin-left:720px;margin-top:0"></div>
+</svg>
+			<svg id="mmlegend" width="200" height="330" style="display:inline;margin-right:0px"></svg>
+			</div>
+</div>
+<div style="width:13%">
+<span class="collapse">&minus;</span>
+<button type="button" class="variables" id = "expl" style="width: 13%">
+<p id = "explText" style="display:block">Explanation of variables</p></button>
+</div>
+<div id="myModal" class="modal">
+
+
+	  <div class="modal-content">
+	    <span class="close">&times;</span>
+	    <p>Please select an option that isn't already used on the other axis.</p>
+	  </div>
+
+
+	</div>
+	<div id="mmModal" class="modal">
+
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<p>No data points found.</p>
+	</div>
+</div>
+<div id="militaryModal" class="modal">
+
+<div class="modal-content">
+	<span class="close">&times;</span>
+	<p>Only one data point found, not enough to generate a new MDS plot. MDS plot for all data points is shown.</p>
+</div>
+</div>
+<div id="explModal" class="emodal">
+
+
+	  <div class="emodal-content">
+	    <span class="close" style="text-align:center">&times;</span>
+	    <p>Each data point represents a county in NC, SC, VA, GA, or FL. There are 505 counties total.<br/>
+				<ul><b>Industry:</b> The industry in which the majority of residents in a county work.</ul>
+				<ul><b>Size:</b> The size classification of a county, depending on population density.</ul>
+				<ul><b>LitAvg:</b> Literacy Average. A score representing the average literacy level of a county, as assessed by the <a href="https://www.oecd.org/skills/piaac/">PIAAC survey</a>. A higher score represents a more literate county, on average.</ul>
+				<ul><b>NumAvg:</b> Numeracy Average. A score representing the average numeracy level of a county, as assessed by the <a href="https://www.oecd.org/skills/piaac/">PIAAC survey</a>. A higher score represents a more numerically literate county, on average.</ul>
+				<ul><b>Pop:</b> Population in thousands. Note that the heat map for population uses a log scale for easier interpretation.</ul>
+				<ul><b>Education:</b> The proportion of the population with at least a bachelor's degree.</ul>
+				<ul><b>Pov:</b> The proportion of the population below the national poverty line.</ul>
+				<ul><b>NoIns:</b> The proportion of the population without health insurance.</ul>
+				<ul><b>MedIncome:</b> The median household income of a county in thousands of dollars.</ul>
+				<ul><b>Unemployment:</b> The proportion of the populations who are unemployed.</ul>
+				<ul><b>VCR:</b> Violent crime rate. The average number of violent crimes per 100,000 residents in a county.</ul>
+				<ul><b>JPR:</b> Jail population rate. The average number of jail inmates per 10,000 residents in a county. Note that the heat map for jail population rate uses a log scale for easier interpretation.</ul>
+
+
+		</div>
+	</div>
+	<script src="https://d3js.org/d3.v6.js"></script>
+	<script src="https://d3js.org/topojson.v1.min.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.13.0/d3-legend.js"></script>
+
+	<script src="{{ url_for('static', filename='js/final.js') }}"></script>
+
+
+</body>
+
+</html>
