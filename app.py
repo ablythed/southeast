@@ -1,4 +1,4 @@
-# from flask import Flask, render_template, request, json, jsonify
+from flask import Flask, render_template, request, json, jsonify
 import numpy as np
 import csv
 import pandas as pd
@@ -16,7 +16,7 @@ from sklearn.manifold import MDS
 from sklearn.metrics import euclidean_distances
 from collections import Counter
 
-# app = Flask(__name__)
+app = Flask(__name__)
 
 dataset = pd.read_csv("southeastData.csv", index_col=None, header=0, engine='python')
 labs = ['LitAvg','NumAvg','Pop', 'Education', 'Pov','NoIns','MedIncome','Unemployment','VCR','JPR']
@@ -39,12 +39,12 @@ Z["Industry"] = Z["Industry"].cat.codes
 Z["Size"] = Z["Size"].astype('category')
 Z["Size"] = Z["Size"].cat.codes
 
-# @app.route('/')
-# def index():
-#     return render_template('index.html')
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
-# @app.route('/mdsB', methods=['POST'])
+@app.route('/mdsB', methods=['POST'])
 def mdsB():
     vars = json.loads(request.get_data().decode())
     K = pd.DataFrame(dataset.values,columns=labsB)
@@ -81,7 +81,7 @@ def mdsB():
     dict["links"] = links
     return json.dumps(dict)
 
-# @app.route('/mdsBCounties', methods=['POST'])
+@app.route('/mdsBCounties', methods=['POST'])
 def mdsBCounties():
     vars = json.loads(request.get_data().decode())
     K = pd.DataFrame(dataset.values,columns=labsB)
@@ -105,7 +105,7 @@ def mdsBCounties():
     return json.dumps(dict)
 
 
-# @app.route('/marimekko', methods=['POST'])
+@app.route('/marimekko', methods=['POST'])
 def marimekko():
     vars = json.loads(request.get_data().decode())
     df1 = dataset[vars[0]]
@@ -114,7 +114,7 @@ def marimekko():
 
     return json.dumps([{vars[0]:pair[0],vars[1]:pair[1],"value":count} for pair,count in Counter(result).items()])
 
-# @app.route('/marimekkoBounds', methods=['POST'])
+@app.route('/marimekkoBounds', methods=['POST'])
 def marimekkoBounds():
     vars = json.loads(request.get_data().decode())
     K = pd.DataFrame(dataset.values,columns=labsB)
@@ -127,5 +127,5 @@ def marimekkoBounds():
 
 
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
